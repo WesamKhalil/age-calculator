@@ -1,0 +1,139 @@
+/* Navigation Bar */
+nav {
+    width: 100%;
+    height: 10vh;
+    min-height: 90px;
+    padding: 0 1.8rem;
+    background-color: blue;
+    position: fixed;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+  }
+
+  .filler {
+    height: 10vh;
+  }
+
+  .logo {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #fff;
+    box-shadow: 2px 2px #000;
+    text-shadow: 2px 2px #000;
+  }
+  
+  .menu {
+    width: 50%;
+    height: 100vh;
+    min-height: 90px;
+    padding: 8.5rem 0;
+    background: blue;
+    position: fixed;
+    right: -50%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    transition: right 0.4s ease;
+  }
+  
+  .nav-btn {
+    color: #fff;
+    background-color: #4e4eff;
+    border-radius: 2px;
+    border: 1px solid #fff;
+    padding: 6px 12px;
+  }
+
+  .nav-btn:hover {
+    background: #0000eb;
+  }
+
+  .nav-btn:active {
+    background: #0000c4;
+    border-color: #0000c4;
+  }
+
+  .nav-btn:visited, .nav-btn {
+    text-decoration: none;
+  }
+  
+  .burger {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    transition: transform 0.4s ease;
+    z-index: 2;
+  }
+  
+  .first-bar,
+  .second-bar,
+  .third-bar {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+  }
+  
+  .toggler {
+    position: absolute;
+    right: 1.8rem;
+    display: block;
+    height: 45px;
+    width: 45px;
+    z-index: 3;
+    cursor: pointer;
+    opacity: 0;
+  }
+  
+  .toggler:checked + .burger {
+    transform: rotate(135deg);
+  }
+  
+  .toggler:checked + .burger .first-bar,
+  .toggler:checked + .burger .third-bar {
+    position: absolute;
+    transform: rotate(90deg);
+  }
+  
+  .toggler:checked:hover + .burger {
+    transform: rotate(225deg);
+  }
+  
+  .toggler:checked ~ .menu {
+    right: 0%;
+  }
+
+  @media (min-width: 580px) {
+    /* Nav */
+    .checkbox, .burger {
+      display: none;
+    }
+
+    .menu {
+      width: 75%;
+      height: 10vh;
+      right: 0;
+      padding: 0;
+      margin-right: 1.2rem;
+      flex-direction: row;
+    }
+  }
+
+  @media (min-width: 930px) {
+    /* Nav */
+    .menu {
+      width: 50%;
+      margin-right: 10rem;
+    }
+  }
