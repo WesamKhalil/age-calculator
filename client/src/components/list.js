@@ -15,7 +15,7 @@ export class List extends Component {
 
     //Runs on initial render, fetches user data from back end api then passes it to the getAge function
     async componentDidMount() {
-        const users = (await axios.get("/api/userAges/")).data.users
+        const users = (await axios.get("/api/userAges")).data.users
 
         console.log(users)
 
@@ -77,7 +77,7 @@ export class List extends Component {
     handleDelete = async (e) => {
 
         const id = e.target.id
-        await axios.delete("/api/userAges/" + id)
+        await axios.delete("/api/userAges" + id)
 
         const newList = this.state.list.filter(({_id}) => _id !== id)
 

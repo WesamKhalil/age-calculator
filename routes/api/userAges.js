@@ -2,10 +2,20 @@ const express = require("express")
 const router = express.Router()
 const User = require("../../models/user")
 
+//Route for getting a specific individual
+router.get("/individual/:id", async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        res.json({user})
+    } catch(error) {
+        res.status("400").json({error})
+    }
+})
+
 //Route for retrieving all the user documents
 router.get("/", async (req, res) => {
     try {
-        const users = await User.find()
+        const users = await User.find().sort({updatedAt: "desc"})
         res.json({users})
     } catch(error) {
         res.status("400").json({error})

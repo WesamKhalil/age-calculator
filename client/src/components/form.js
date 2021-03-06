@@ -32,7 +32,7 @@ export class Form extends Component {
         if(this.props.location.name) {
             await axios.put("/api/userAges/" + this.props.match.params.id, { name, date })
         } else {
-            await axios.post("/api/userAges/", { name, date })
+            await axios.post("/api/userAges", { name, date })
         }
 
         //Redirects us to the List page and component after posting/editing
@@ -41,12 +41,19 @@ export class Form extends Component {
 
     //Checks if we're using form for editing, if we are using it for editing then sets state for name and date to the same values in the document we're editing
     //You'll see the name and date of the document being edited on initial load
-    componentDidMount() {
+    async componentDidMount() {
         if(this.props.location.name) {
             console.log(this.props.location.name, this.props.location.date)
             this.setState({
                 name: this.props.location.name,
                 date: this.props.location.date,
+            })
+        } else if(this.props.match.params.id) {
+            const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data.user
+
+            this.setState({
+                name: user.name,
+                date: user.date.slice(0, 10),
             })
         }
     }
