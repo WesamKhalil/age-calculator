@@ -28,6 +28,8 @@ export class List extends Component {
     getAge = users => {
 
         const currentYear = String(new Date().getFullYear())
+        const currentMonth = String(new Date().getMonth() + 1)
+        const currentDay = String(new Date().getDate())
         //Time in milliseconds
         const currentTime = new Date().getTime()
 
@@ -35,18 +37,25 @@ export class List extends Component {
 
             const userMonthAndDay = date.slice(4)
             const userYear = date.slice(0, 4)
-            let years = currentYear - userYear
 
-            //Check if the current date or user date has more milliseconds
-            //We do it this way to account for leap years which could account for a little over 2% inaccuracy rate
-            const userDateIsLarger = new Date(date).getTime() - new Date(userYear).getTime() > currentTime - new Date(currentYear).getTime()
+            //Checking if the month and day of user is higher than the current date
+            //Because of leap years a year can be either 365 days or 366 days so I'm 
+            let userDateIsLarger
 
-            //Takes away a year if userDateIsLarger is true
-            if(userDateIsLarger) years--
+            const userMonthIsEqual = parseInt(date.slice(5, 7)) === parseInt(currentMonth)
+            if(userMonthIsEqual) {
+                const userDayIsLargerOrEqual = parseInt(date.slice(8, 10)) >= parseInt(currentDay)
+                userDateIsLarger = userDayIsLargerOrEqual
+            } else {
+                const userMonthIsLarger = parseInt(date.slice(5, 7)) > parseInt(currentMonth)
+                userDateIsLarger = userMonthIsLarger
+            }
 
             //Difference between current date and user date measured in milliseconds, excluding years
             //userDateIsLarger is a boolean but true = 1, and false = 0, so it will take away a year if true
             const timeDifference = currentTime - new Date((currentYear - userDateIsLarger) + userMonthAndDay).getTime()
+
+            let years = currentYear - userYear - userDateIsLarger
 
             const oneDay = 1000 * 60 * 60 * 24
             const days = Math.floor(timeDifference / oneDay)
