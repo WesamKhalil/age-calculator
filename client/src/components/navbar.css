@@ -7,7 +7,7 @@ nav {
     position: fixed;
     color: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     z-index: 3;
   }
@@ -49,6 +49,9 @@ nav {
     border-radius: 2px;
     border: 1px solid #fff;
     padding: 6px 12px;
+    display: inline-block;
+    text-align: center;
+    width: 140px;
   }
 
   .nav-btn:hover {
@@ -112,26 +115,30 @@ nav {
     right: 0%;
   }
 
-  @media (min-width: 580px) {
+  @media (min-width: 650px) {
     /* Nav */
+    nav {
+      justify-content: center;
+    }
+
     .checkbox, .burger {
       display: none;
     }
 
     .menu {
-      width: 75%;
+      width: 60%;
       height: 10vh;
       right: 0;
       padding: 0;
       margin-right: 1.2rem;
       flex-direction: row;
+      position: relative;
     }
   }
 
   @media (min-width: 930px) {
     /* Nav */
     .menu {
-      width: 50%;
-      margin-right: 10rem;
+      width: 40%;
     }
   }

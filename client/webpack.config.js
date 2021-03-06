@@ -18,8 +18,8 @@ module.exports = {
         hot: true,
         proxy: {
             "/api": "http://localhost:" + process.env.PORT
-        }
-
+        },
+        historyApiFallback: true
     },
     module: {
         rules: [

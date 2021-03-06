@@ -39,7 +39,10 @@ export class List extends Component {
             const userYear = date.slice(0, 4)
 
             //Checking if the month and day of user is higher than the current date
-            //Because of leap years a year can be either 365 days or 366 days so I'm 
+            //Because of leap years a year can be either 365 days or 366 days so I'm checking based on dates and not time in milliseconds
+            //For example 2020 is a leap year and has a 29th of February date, but 2019 isn't a leap year and doesn't have a 29th of February date
+            //So if a baby was born on the 1st of March 2019 you'd expect them to be 1 years old on 1st of March 2020, but because 2020 is a leap year and has an extra day on 29th of February
+            //365 days from their birthday would translate to the 29th of February and it would say that they are 1 years old on the 29th of February one day before their birthday
             let userDateIsLarger
 
             const userMonthIsEqual = parseInt(date.slice(5, 7)) === parseInt(currentMonth)
@@ -84,7 +87,7 @@ export class List extends Component {
     //Returns an object to a Link element where it will be used to repurpose our form component to edit our data
     editObject = (name, date, id) => {
         return {
-            pathname: '/edit-age/' + id,
+            pathname: '/edit/' + id,
             name,
             date: date.slice(0, 10)
         }
@@ -95,15 +98,17 @@ export class List extends Component {
             <div className="list">
                 {
                     this.state.list.map(({name, date, dob, years, days, hours, _id}, index) => (
-                        <ol key={'ol' + index}>
-                            <li>Name: {name}</li>
-                            <li>DOB: {dob}</li>
-                            <li>Years: {years}</li>
-                            <li>Days: {days}</li>
-                            <li>Hours: {hours}</li>
-                            <button onClick={this.handleDelete} id={_id}>Delete</button>
-                            <button><Link to={this.editObject(name, date, _id)}>Edit</Link></button>
-                        </ol>
+                        <div className="record-container" key={"record" + index}>
+                            <div className="record">
+                                <p><span style={{textDecoration: "underline"}}>Name:</span> {name}</p>
+                                <p><span style={{textDecoration: "underline"}}>DOB:</span> {dob}</p>
+                                <p><span style={{textDecoration: "underline"}}>Years:</span> {years}</p>
+                                <p><span style={{textDecoration: "underline"}}>Days:</span> {days}</p>
+                                <p><span style={{textDecoration: "underline"}}>Hours:</span> {hours}</p>
+                            </div>
+                            <button onClick={this.handleDelete} id={_id} className="delete">Delete</button>
+                            <Link to={this.editObject(name, date, _id)}><button className="edit">Edit</button></Link>
+                        </div>
                     ))
                 }
             </div>

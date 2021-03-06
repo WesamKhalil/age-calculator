@@ -1,7 +1,52 @@
 .list {
-    margin-top: 15vh;
+    margin: 15vh 10px 0 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 220px);
+    grid-gap: 20px 20px;
+    justify-content: center;
+    align-content: center;
 }
 
-ol {
-    margin-left: 20px;
+.record-container {
+    width: 220px;
+    padding: 1.5rem;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.record {
+    margin-bottom: 1.2rem;
+}
+
+p {
+    margin: 3px 0;
+}
+
+.delete, .edit {
+    width: 100%;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.delete {
+    margin-bottom: 1.2rem;
+    background-color: #f00;
+    color: #fff;
+}
+.edit {
+    background-color: #0f0;
+}
+
+@media (min-width: 650px) {
+    .list {
+        width: 85%;
+        margin: 15vh auto 0 auto;
+    }
+}
+
+@media (min-width: 930px) {
+    .list {
+        width: 60%;
+        margin: 20vh auto 0 auto;
+    }
 }

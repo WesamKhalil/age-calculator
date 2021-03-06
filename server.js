@@ -18,7 +18,8 @@ app.use(express.static(__dirname + "/client/dist"))
 //Api for the SPA
 app.use("/api/userAges", userRoutes)
 
-app.get(["/", "/list", /\/edit-age(\/:id)?/], (req, res) => {
+//Delivers the SPA
+app.get(["/", "/list", "/edit/:id"], (req, res) => {
     res.sendFile(__dirname + "/client/dist/index.html")
 })
 

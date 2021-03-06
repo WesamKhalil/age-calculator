@@ -55,9 +55,9 @@ export class Form extends Component {
         return (
             <div className="form">
                 <form onSubmit={this.handleSubmit}>
-                    <input type="text" name="name" className="form-input" defaultValue={this.state.name} placeholder="Name" required/>
+                    <input type="text" name="name" className="form-input" defaultValue={this.state.name} placeholder="Name" autoComplete="off" required/>
                     <input type="date" name="date" className="form-input" defaultValue={this.state.date} required/>
-                    <button>Get Age</button>
+                    <button className="form-btn">Calculate Age</button>
                 </form>
             </div>
         )

@@ -6,4 +6,6 @@
 
 .container {
     overflow: hidden;
+    min-height: 90vh;
+    padding-bottom: 10vh;
 }
