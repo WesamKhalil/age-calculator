@@ -30,9 +30,9 @@ export class Form extends Component {
 
         //Checks if we're submitting an edit or a post
         if(this.props.location.name) {
-            await axios.put("http://localhost:3000/api/userAges/" + this.props.match.params.id, { name, date })
+            await axios.put("/api/userAges/" + this.props.match.params.id, { name, date })
         } else {
-            await axios.post("http://localhost:3000/api/userAges/", { name, date })
+            await axios.post("/api/userAges/", { name, date })
         }
 
         //Redirects us to the List page and component after posting/editing

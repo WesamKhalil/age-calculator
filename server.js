@@ -1,7 +1,6 @@
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
-const cors = require("cors")
 const userRoutes = require("./routes/api/userAges")
 require("dotenv").config()
 
@@ -10,10 +9,6 @@ require("dotenv").config()
 mongoose.connect(process.env.MONGOURL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
     .then(res => console.log("Connected to MongoDB"))
 
-
-//In development the client will use it's own server so I've enabled cors so it's able to communicate with the back end
-//I don't think this is neccessary in production
-app.use(cors())
 //Middleware to parse data sent from client, extracts the body and appends it to the request
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

@@ -1,5 +1,6 @@
 const path = require("path")
 const babelTransformRuntime = require('@babel/plugin-transform-runtime')
+require('../node_modules/dotenv').config({ path: __dirname + '../../.env' })
 
 module.exports = {
     mode: "development",
@@ -12,9 +13,12 @@ module.exports = {
     },
     devServer: {
         contentBase: path.resolve(__dirname, "dist"),
-        port: process.env.PORT || 5000,
+        port: process.env.CLIENTPORT || 5000,
         open: true,
-        hot: true
+        hot: true,
+        proxy: {
+            "/api": "http://localhost:" + process.env.PORT
+        }
 
     },
     module: {
