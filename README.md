@@ -1,4 +1,4 @@
-You need a link to a mongoDB database and store it in the .env file in the root of the folder.
+You need a link to a MongoDB database and store it in the .env file in the root of the folder.
 
 Make sure to install node packages for the back end by typing in the terminal "npm install".
 
