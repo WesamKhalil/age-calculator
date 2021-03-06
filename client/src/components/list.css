@@ -9,7 +9,7 @@
 
 .record-container {
     width: 250px;
-    padding: 1.5rem;
+    padding: 1.2rem;
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -39,14 +39,14 @@ p {
 
 @media (min-width: 650px) {
     .list {
-        width: 85%;
+        width: 95%;
         margin: 15vh auto 0 auto;
     }
 }
 
 @media (min-width: 930px) {
     .list {
-        width: 60%;
+        width: 80%;
         margin: 20vh auto 0 auto;
     }
 }

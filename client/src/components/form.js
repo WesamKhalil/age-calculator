@@ -42,6 +42,7 @@ export class Form extends Component {
     }
 
     //Checks if we're using form for editing, if we are using it for editing then sets state for name and date to the same values in the document we're editing
+    //If user refreshes the browser then we fetch the data, we don't fetch the data the first time round to avoid unnecessary API calls
     //You'll see the name and date of the document being edited on initial load
     async componentDidMount() {
         if(this.props.location.name) {
