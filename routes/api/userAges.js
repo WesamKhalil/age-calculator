@@ -45,7 +45,6 @@ router.put("/:id", async (req, res) => {
 //Route for deleting a specific document by passing in it's id
 router.delete("/:id", async (req, res) => {
     try {
-        console.log(req.params.id)
         const user = await User.findByIdAndDelete(req.params.id)
         res.json({user})
     } catch(error) {

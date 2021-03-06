@@ -1,14 +1,14 @@
 .list {
     margin: 15vh 10px 0 10px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, 220px);
+    grid-template-columns: repeat(auto-fill, 250px);
     grid-gap: 20px 20px;
     justify-content: center;
     align-content: center;
 }
 
 .record-container {
-    width: 220px;
+    width: 250px;
     padding: 1.5rem;
     border: 1px solid black;
     border-radius: 5px;

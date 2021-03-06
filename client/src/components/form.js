@@ -9,7 +9,8 @@ export class Form extends Component {
         //Name and date, is given a value when form is repurposed to edit existing documents of users and their ages
         this.state = {
             name: '',
-            date: ''
+            date: '',
+            hours: null
         }
     }
 
@@ -18,6 +19,7 @@ export class Form extends Component {
 
         const name = e.target.name.value
         const date = e.target.date.value
+        const hours = e.target.hours.value || 0
 
         //Checks if the user date is too large or too small
         if(new Date(date) > new Date()) {
@@ -30,9 +32,9 @@ export class Form extends Component {
 
         //Checks if we're submitting an edit or a post
         if(this.props.location.name) {
-            await axios.put("/api/userAges/" + this.props.match.params.id, { name, date })
+            await axios.put("/api/userAges/" + this.props.match.params.id, { name, date, hours })
         } else {
-            await axios.post("/api/userAges", { name, date })
+            await axios.post("/api/userAges", { name, date, hours })
         }
 
         //Redirects us to the List page and component after posting/editing
@@ -43,10 +45,10 @@ export class Form extends Component {
     //You'll see the name and date of the document being edited on initial load
     async componentDidMount() {
         if(this.props.location.name) {
-            console.log(this.props.location.name, this.props.location.date)
             this.setState({
                 name: this.props.location.name,
                 date: this.props.location.date,
+                hours: this.props.location.hours
             })
         } else if(this.props.match.params.id) {
             const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data.user
@@ -54,6 +56,7 @@ export class Form extends Component {
             this.setState({
                 name: user.name,
                 date: user.date.slice(0, 10),
+                hours: user.hours
             })
         }
     }
@@ -63,6 +66,7 @@ export class Form extends Component {
             <div className="form">
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" name="name" className="form-input" defaultValue={this.state.name} placeholder="Name" autoComplete="off" required/>
+                    <input type="number" name="hours" className="form-input" defaultValue={this.state.hours} placeholder="Hour you were born (optional)" min="0" max="23"/>
                     <input type="date" name="date" className="form-input" defaultValue={this.state.date} required/>
                     <button className="form-btn">Calculate Age</button>
                 </form>

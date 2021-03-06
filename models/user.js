@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: true,
+    },
+    hours: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true
