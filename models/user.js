@@ -19,9 +19,11 @@ userSchema.pre("save", function(next) {
     const userDate = new Date(this.date)
 
     if(userDate > currentDate) {
-        throw Error("Age can't be higher than current date.")
+        new Error("Invalid input.")
+        return next({ error_message: "Age can't be larger than current date." })
     } else if(currentDate.getFullYear() - userDate.getFullYear() > 117) {
-        throw Error("User can't be older than 117 years old.")
+        new Error("Invalid input.")
+        return next({ error_message: "User can't be older than 117 years old." })
     }
     next()
 })

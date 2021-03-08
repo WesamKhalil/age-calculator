@@ -16,7 +16,6 @@
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.35);
     transition: 0.3s;
-    box-sizing: border-box;
 }
 
 .form-btn {
@@ -36,6 +35,19 @@
 .form-input:focus {
     background-color: #fff;
     border: 1px solid rgba(30, 85, 250, 0.47);
+}
+
+.error-message {
+    width: 100%;
+    margin-top: 2.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #f00;
+    border: 2px solid #f00;
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, 0.1);
 }
 
 @media (min-width: 580px) {
