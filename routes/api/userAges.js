@@ -8,7 +8,7 @@ router.get("/individual/:id", async (req, res) => {
         const user = await User.findById(req.params.id)
         res.json({user})
     } catch(error) {
-        res.status("400").json({error})
+        res.sendStatus("400")
     }
 })
 
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         const users = await User.find().sort({updatedAt: "desc"})
         res.json({users})
     } catch(error) {
-        res.status("400").json({error})
+        res.sendStatus("400")
     }
 })
 
@@ -48,7 +48,7 @@ router.delete("/:id", async (req, res) => {
         const user = await User.findByIdAndDelete(req.params.id)
         res.json({user})
     } catch(error) {
-        res.status("400").json({error})
+        res.sendStatus("400")
     }
 })
 

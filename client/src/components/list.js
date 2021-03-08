@@ -9,17 +9,18 @@ export class List extends Component {
 
         //List is where we'll place names dates and times
         this.state = {
-            list: []
+            list: [],
+            empty: false
         }
     }
 
     //Runs on initial render, fetches user data from back end api then passes it to the getAge function
-    async componentDidMount() {
+    async componentWillMount() {
         const users = (await axios.get("/api/userAges")).data.users
 
         const list = this.getAge(users)
 
-        this.setState({list})
+        this.setState({ list, empty: list.length === 0 })
     }
 
     //Called on initial render, returns array of objects with all the values we need to display for list
@@ -95,7 +96,7 @@ export class List extends Component {
 
         const newList = this.state.list.filter(({_id}) => _id !== id)
 
-        this.setState({list: newList})
+        this.setState({ list: newList, empty: newList.length === 0 })
     }
 
     //Returns an object to a Link element where it will be used to repurpose our form component to edit our data
@@ -109,24 +110,26 @@ export class List extends Component {
     }
 
     render() {
+        if(this.state.empty) return (<div className="no-users"><h1>No user records available!</h1></div>)
+
+        const userRecords = this.state.list.map(({name, date, userHours, hours, dob, years, days, daysUntilBirthday, _id}, index) => (
+            <div className="record-container" key={"record" + index}>
+                <div className="record">
+                    <p><span style={{textDecoration: "underline"}}>Name:</span> {name}</p>
+                    <p><span style={{textDecoration: "underline"}}>DOB:</span> {dob}</p>
+                    <p><span style={{textDecoration: "underline"}}>Years:</span> {years}</p>
+                    <p><span style={{textDecoration: "underline"}}>Days:</span> {days}</p>
+                    <p><span style={{textDecoration: "underline"}}>Hours:</span> {hours}</p>
+                    { daysUntilBirthday > 364 ? <p>Happy Birthday!</p> : (<p><span style={{textDecoration: "underline"}}>Days until birthday:</span> {daysUntilBirthday}</p>) }
+                </div>
+                <button onClick={this.handleDelete} id={_id} className="delete">Delete</button>
+                <Link to={this.editObject(name, date, userHours, _id)}><button className="edit">Edit</button></Link>
+            </div>
+        ))
+
         return (
             <div className="list">
-                {
-                    this.state.list.map(({name, date, userHours, hours, dob, years, days, daysUntilBirthday, _id}, index) => (
-                        <div className="record-container" key={"record" + index}>
-                            <div className="record">
-                                <p><span style={{textDecoration: "underline"}}>Name:</span> {name}</p>
-                                <p><span style={{textDecoration: "underline"}}>DOB:</span> {dob}</p>
-                                <p><span style={{textDecoration: "underline"}}>Years:</span> {years}</p>
-                                <p><span style={{textDecoration: "underline"}}>Days:</span> {days}</p>
-                                <p><span style={{textDecoration: "underline"}}>Hours:</span> {hours}</p>
-                                { daysUntilBirthday > 364 ? <p>Happy Birthday!</p> : (<p><span style={{textDecoration: "underline"}}>Days until birthday:</span> {daysUntilBirthday}</p>) }
-                            </div>
-                            <button onClick={this.handleDelete} id={_id} className="delete">Delete</button>
-                            <Link to={this.editObject(name, date, userHours, _id)}><button className="edit">Edit</button></Link>
-                        </div>
-                    ))
-                }
+                { userRecords }
             </div>
         )
     }
