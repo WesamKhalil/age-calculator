@@ -24,22 +24,17 @@ export class Form extends Component {
         const hourString = "0".repeat(hours < 10) + hours
         const dateAndHour = new Date(`${date}T${hourString}:00`)
 
-        const currentDate = new Date()
-
-        let error_message
         try {
             //Checks if we're submitting an edit or a post
             if(this.props.location.name) {
-                response = await axios.put("/api/userAges/" + this.props.match.params.id, { name, date: dateAndHour })
-
+                await axios.put("/api/userAges/" + this.props.match.params.id, { name, date: dateAndHour })
             } else {
-                response = await axios.post("/api/userAges", { name, date: dateAndHour })
+                await axios.post("/api/userAges", { name, date: dateAndHour })
             }
         } catch(error) {
-            error_message = error.response.data.error_message
+            return this.setState({ error_message: error.response.data.error_message })
         }
 
-        if(error_message) return this.setState({error_message})
         //Redirects us to the List page and component after posting/editing
         this.props.history.push("/list")
     }
@@ -55,11 +50,12 @@ export class Form extends Component {
                 hours: this.props.location.hours
             })
         } else if(this.props.match.params.id) {
+            console.log("laoding")
             const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data.user
 
             this.setState({
                 name: user.name,
-                date: new Date(user.date).toString().slice(0, 10),
+                date: user.date.slice(0, 10),
                 hours: new Date(user.date).getHours()
             })
         }
