@@ -9,13 +9,23 @@ const userSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: true,
-    },
-    hours: {
-        type: Number,
-        default: 0
     }
 }, {
     timestamps: true
 })
 
-module.exports = mongoose.model("user", userSchema)
+userSchema.pre("save", function(next) {
+    const currentDate = new Date()
+    const userDate = new Date(this.date)
+
+    if(userDate > currentDate) {
+        throw Error("Age can't be higher than current date.")
+    } else if(currentDate.getFullYear() - userDate.getFullYear() > 117) {
+        throw Error("User can't be older than 117 years old.")
+    }
+    next()
+})
+
+UserModel = mongoose.model("user", userSchema)
+
+module.exports = UserModel

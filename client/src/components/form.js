@@ -20,21 +20,25 @@ export class Form extends Component {
         const name = e.target.name.value
         const date = e.target.date.value
         const hours = e.target.hours.value || 0
+        const hourString = "0".repeat(hours < 10) + hours
+        const finalDate = new Date(`${date}T${hourString}:00`)
+
+        const currentDate = new Date()
 
         //Checks if the user date is too large or too small
-        if(new Date(date) > new Date()) {
+        if(finalDate > currentDate) {
             alert("What are you, a time traveller?")
             return
-        } else if(new Date().getFullYear() - parseInt(date.slice(0, 4)) > 117) {
+        } else if(currentDate.getFullYear() - parseInt(date.slice(0, 4)) > 117) {
             alert("You belong in a museum.")
             return
         }
 
         //Checks if we're submitting an edit or a post
         if(this.props.location.name) {
-            await axios.put("/api/userAges/" + this.props.match.params.id, { name, date, hours })
+            await axios.put("/api/userAges/" + this.props.match.params.id, { name, date: finalDate })
         } else {
-            await axios.post("/api/userAges", { name, date, hours })
+            await axios.post("/api/userAges", { name, date: finalDate })
         }
 
         //Redirects us to the List page and component after posting/editing
@@ -56,8 +60,8 @@ export class Form extends Component {
 
             this.setState({
                 name: user.name,
-                date: user.date.slice(0, 10),
-                hours: user.hours
+                date: new Date(user.date).toString().slice(0, 10),
+                hours: new Date(user.date).getHours()
             })
         }
     }

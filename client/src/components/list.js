@@ -33,11 +33,13 @@ export class List extends Component {
         //Time in milliseconds
         const currentTime = currentDate.getTime()
 
-        return users.map(({name, date, hours, _id}) => {
+        return users.map(({name, date, _id}) => {
 
-            const userDay = date.slice(8, 10)
-            const userMonth = date.slice(5, 7)
-            const userYear = date.slice(0, 4)
+            const userDate = new Date(date)
+            const userHours = userDate.getHours()
+            const userDay = userDate.getDate()
+            const userMonth = userDate.getMonth() + 1
+            const userYear = userDate.getFullYear()
 
             //Checking if the month and day of user is higher than the current date
             //Because of leap years a year can be either 365 days or 366 days so I'm checking based on dates and not time in milliseconds
@@ -46,11 +48,11 @@ export class List extends Component {
             //365 days from their birthday would translate to the 29th of February and it would say that they are 1 years old on the 29th of February one day before their birthday
             let userDateIsLarger
 
-            const monthDifference = parseInt(date.slice(5, 7)) - currentMonth
+            const monthDifference = userMonth - currentMonth
             if(monthDifference === 0) {
-                const dayDifference = parseInt(date.slice(8, 10)) - currentDay
+                const dayDifference = userDay - currentDay
                 if(dayDifference === 0) {
-                    userDateIsLarger = hours >= currentHour
+                    userDateIsLarger = userHours >= currentHour
                 } else {
                     userDateIsLarger = dayDifference > 0
                 }
@@ -62,27 +64,26 @@ export class List extends Component {
             //The year since the last birthday and the current date
             const baseYear = currentYear - userDateIsLarger
 
-            const hourString = "0".repeat(hours < 10) + hours
-            const userDateFormat = `${baseYear}-${userMonth}-${userDay}T${hourString}:00`
+            const userDateFormat = baseYear + userDate.toString().slice(4)
 
             //Difference between current date and user date measured in milliseconds, excluding years
             const timeDifference = currentTime - new Date(userDateFormat).getTime()
 
-            let years = baseYear - userYear
-
+            //Values we will render
             const oneDay = 1000 * 60 * 60 * 24
             const days = Math.floor(timeDifference / oneDay)
-            const hourDifference = Math.floor((timeDifference % oneDay) / (1000 * 60 * 60))
+            const hours = Math.floor((timeDifference % oneDay) / (1000 * 60 * 60))
+            const years = baseYear - userYear
 
             //Days until birthday
             const nextBirthdayTime = new Date(`${currentYear + !userDateIsLarger}-${userMonth}-${userDay}`).getTime()
             let daysUntilBirthday = Math.ceil((nextBirthdayTime - currentTime) / oneDay)
 
             //Date of birth in a more readable format
-            const dob = new Date(date).toString().slice(0, 15) + " " + hourString + ":00"
+            const dob = userDate.toString().slice(0, 21)
 
             //Object we'll use to render each recorded user and they're age
-            return { name, date, hours, dob, years, days, hourDifference, daysUntilBirthday, _id }
+            return { name, date, userHours, hours, dob, years, days, daysUntilBirthday, _id }
         })
     }
     
@@ -98,11 +99,11 @@ export class List extends Component {
     }
 
     //Returns an object to a Link element where it will be used to repurpose our form component to edit our data
-    editObject = (name, date, hours, id) => {
+    editObject = (name, date, userHours, id) => {
         return {
             pathname: '/edit/' + id,
             name,
-            hours,
+            hours: userHours,
             date: date.slice(0, 10)
         }
     }
@@ -111,18 +112,18 @@ export class List extends Component {
         return (
             <div className="list">
                 {
-                    this.state.list.map(({name, date, hours, dob, years, days, hourDifference, daysUntilBirthday, _id}, index) => (
+                    this.state.list.map(({name, date, userHours, hours, dob, years, days, daysUntilBirthday, _id}, index) => (
                         <div className="record-container" key={"record" + index}>
                             <div className="record">
                                 <p><span style={{textDecoration: "underline"}}>Name:</span> {name}</p>
                                 <p><span style={{textDecoration: "underline"}}>DOB:</span> {dob}</p>
                                 <p><span style={{textDecoration: "underline"}}>Years:</span> {years}</p>
                                 <p><span style={{textDecoration: "underline"}}>Days:</span> {days}</p>
-                                <p><span style={{textDecoration: "underline"}}>Hours:</span> {hourDifference}</p>
-                                <p>{ daysUntilBirthday > 364 ? "Happy Birthday!" : (<span style={{textDecoration: "underline"}}>Days until birthday: {daysUntilBirthday}</span>)}</p>
+                                <p><span style={{textDecoration: "underline"}}>Hours:</span> {hours}</p>
+                                { daysUntilBirthday > 364 ? <p>Happy Birthday!</p> : (<p><span style={{textDecoration: "underline"}}>Days until birthday:</span> {daysUntilBirthday}</p>) }
                             </div>
                             <button onClick={this.handleDelete} id={_id} className="delete">Delete</button>
-                            <Link to={this.editObject(name, date, hours, _id)}><button className="edit">Edit</button></Link>
+                            <Link to={this.editObject(name, date, userHours, _id)}><button className="edit">Edit</button></Link>
                         </div>
                     ))
                 }

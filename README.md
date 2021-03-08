@@ -1,3 +1,6 @@
+App that takes a name and date of birth and returns your age in years, days and hours. Stores these records on a database which you fetch to see all records.
+Back end server that sends an SPA and provides an API to said SPA to perform CRUD operations on docuemnts stored on a database.
+
 You need a link to a MongoDB database and store it in the .env file in the root of the folder.
 
 Make sure to install node packages for the back end by typing in the terminal "npm install".

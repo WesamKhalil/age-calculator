@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
         const user = await User.create(req.body)
         res.json({user})
     } catch(error) {
-        res.status("400").json({error})
+        res.send(error.toString())
     }
 })
 
