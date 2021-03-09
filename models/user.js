@@ -4,27 +4,27 @@ const mongoose = require("mongoose")
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, "Please enter a name."],
     },
     date: {
         type: Date,
-        required: true,
+        required: [true, "Please enter an email."],
+        validate: [
+            { validator: isDateLower, message: "Age can't be larger than current date." },
+            { validator: isDateHigher, message: "User can't be older than 117 years old." }
+        ]
     }
 }, {
     timestamps: true
 })
 
-userSchema.pre("save", function(next) {
-    const currentDate = new Date()
-    const userDate = new Date(this.date)
+function isDateHigher(date) {
+    return new Date(date) < new Date()
+}
 
-    if(userDate > currentDate) {
-        return next({ error_message: "Age can't be larger than current date." })
-    } else if(currentDate.getFullYear() - userDate.getFullYear() > 117) {
-        return next({ error_message: "User can't be older than 117 years old." })
-    }
-    next()
-})
+function isDateLower(date) {
+    return new Date().getFullYear() - new Date(date).getFullYear() < 117
+}
 
 UserModel = mongoose.model("user", userSchema)
 
