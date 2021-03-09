@@ -15,7 +15,7 @@ export class List extends Component {
     }
 
     //Runs on initial render, fetches user data from back end api then passes it to the getAge function
-    async componentWillMount() {
+    async componentDidMount() {
         const users = (await axios.get("/api/userAges")).data.users
 
         const list = this.getAge(users)
@@ -35,7 +35,6 @@ export class List extends Component {
         const currentTime = currentDate.getTime()
 
         return users.map(({name, date, _id}) => {
-
             const userDate = new Date(date)
             const userHours = userDate.getHours()
             const userDay = userDate.getDate()

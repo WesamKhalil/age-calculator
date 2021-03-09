@@ -1,16 +1,26 @@
 const User = require('../models/user')
 
-const errorHandler = () => {
-    
+const errorHandler = (error) => {
+    if(error._message === "user validation failed") {
+        let newError = { name: null, hours: null, date: null, general: null }
+        Object.keys(error.errors).forEach(errorName => {
+            const message = error.errors[errorName].message
+            newError[errorName] = message
+        })
+        return { error_message: newError }
+    } else if(error.kind === "ObjectId") {
+        return { error_message: { general: "User ID doesn't exist." } }
+    }
 }
 
 //Route for getting a specific individual
 const getUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-        res.json({user})
+        res.json(user)
     } catch(error) {
-        res.status(400).json({ error_message: "User ID doesn't exist." })
+        const newError = errorHandler(error)
+        res.status(404).json(newError)
     }
 }
 
@@ -30,7 +40,8 @@ const addUser = async (req, res) => {
         const user = await User.create(req.body)
         res.json({user})
     } catch(error) {
-        res.status(400).json({ error_message: error.errors.date.properties.message })
+        const newError = errorHandler(error)
+        res.status(400).json(newError)
     }
 }
 
@@ -40,7 +51,8 @@ const updateUser = async (req, res) => {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
         res.sendStatus(200)
     } catch(error) {
-        res.status(400).json({ error_message: error.errors.date.properties.message })
+        const newError = errorHandler(error)
+        res.status(400).json(newError)
     }
 }
 
@@ -50,7 +62,7 @@ const deleteUser = async (req, res) => {
         const user = await User.findByIdAndDelete(req.params.id)
         res.json({user})
     } catch(error) {
-        res.sendStatus(400)
+        res.sendStatus(404)
     }
 }
 

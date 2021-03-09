@@ -23,6 +23,11 @@ app.get(["/", "/list", "/edit/:id"], (req, res) => {
     res.sendFile(__dirname + "/client/dist/index.html")
 })
 
+//Catches any request that doesn't exist and returns text
+app.get("*", (req, res) => {
+    res.send("doesn't exist.")
+})
+
 //Port number, default is 3000
 const port = process.env.PORT || 3000
 //Telling Node to listen to a port

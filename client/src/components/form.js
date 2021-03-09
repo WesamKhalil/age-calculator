@@ -11,7 +11,12 @@ export class Form extends Component {
             name: '',
             date: '',
             hours: null,
-            error_message: null
+            error_message: {
+                name: null,
+                hours: null,
+                date: null,
+                general: null
+            }
         }
     }
 
@@ -50,8 +55,7 @@ export class Form extends Component {
                 hours: this.props.location.hours
             })
         } else if(this.props.match.params.id) {
-            console.log("laoding")
-            const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data.user
+            const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data
 
             this.setState({
                 name: user.name,
@@ -61,15 +65,23 @@ export class Form extends Component {
         }
     }
 
+    renderError = message => {
+        console.log(message)
+        return message != null ? (<div className="error-message">{message}</div>) : null
+    }
+
     render() {
         return (
             <div className="form">
                 <form onSubmit={this.handleSubmit}>
-                    <input type="text" name="name" className="form-input" defaultValue={this.state.name} placeholder="Name" autoComplete="off" required/>
+                    <input type="text" name="name" className="form-input" defaultValue={this.state.name} placeholder="Name" autoComplete="off" />
+                    {this.renderError(this.state.error_message.name)}
                     <input type="number" name="hours" className="form-input" defaultValue={this.state.hours} placeholder="Hour you were born (optional)" min="0" max="23"/>
-                    <input type="date" name="date" className="form-input" defaultValue={this.state.date} required/>
+                    {this.renderError(this.state.error_message.hours)}
+                    <input type="date" name="date" className="form-input" defaultValue={this.state.date} />
+                    {this.renderError(this.state.error_message.date)}
                     <button className="form-btn">Calculate Age</button>
-                    {this.state.error_message ? (<div className="error-message">{this.state.error_message}</div>) : null}
+                    {this.renderError(this.state.error_message.general)}
                 </form>
             </div>
         )
