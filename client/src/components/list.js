@@ -33,6 +33,7 @@ export class List extends Component {
         const currentHour = currentDate.getHours()
         //Time in milliseconds
         const currentTime = currentDate.getTime()
+        const currentDateTime = new Date(`${currentYear}-${currentMonth}-${currentDay}`).getTime()
 
         return users.map(({name, date, _id}) => {
             const userDate = new Date(date)
@@ -76,14 +77,15 @@ export class List extends Component {
             const years = baseYear - userYear
 
             //Days until birthday
-            const nextBirthdayTime = new Date(`${currentYear + !userDateIsLarger}-${userMonth}-${userDay}`).getTime()
-            let daysUntilBirthday = Math.ceil((nextBirthdayTime - currentTime) / oneDay)
+            const userDateIsSmaller = !userDateIsLarger
+            const nextBirthdayTime = new Date(`${currentYear + userDateIsSmaller}-${userMonth}-${userDay}`).getTime()
+            const daysUntilBirthday = Math.ceil((nextBirthdayTime - currentDateTime) / oneDay)
 
             //Date of birth in a more readable format
             const dob = userDate.toString().slice(0, 21)
 
             //Object we'll use to render each recorded user and they're age
-            return { name, date, userHours, hours, dob, years, days, daysUntilBirthday, _id }
+            return { name, date, years, days, hours, dob, daysUntilBirthday, userHours, _id }
         })
     }
     
@@ -111,7 +113,7 @@ export class List extends Component {
     render() {
         if(this.state.empty) return (<div className="no-users"><h1>No user records available!</h1></div>)
 
-        const userRecords = this.state.list.map(({name, date, userHours, hours, dob, years, days, daysUntilBirthday, _id}, index) => (
+        const userRecords = this.state.list.map(({ name, date, years, days, hours, dob, daysUntilBirthday, userHours, _id }, index) => (
             <div className="record-container" key={"record" + index}>
                 <div className="record">
                     <p><span style={{textDecoration: "underline"}}>Name:</span> {name}</p>
@@ -119,7 +121,7 @@ export class List extends Component {
                     <p><span style={{textDecoration: "underline"}}>Years:</span> {years}</p>
                     <p><span style={{textDecoration: "underline"}}>Days:</span> {days}</p>
                     <p><span style={{textDecoration: "underline"}}>Hours:</span> {hours}</p>
-                    { daysUntilBirthday > 364 ? <p>Happy Birthday!</p> : (<p><span style={{textDecoration: "underline"}}>Days until birthday:</span> {daysUntilBirthday}</p>) }
+                    { daysUntilBirthday === 0 || daysUntilBirthday > 364 ? <p>Happy Birthday!</p> : (<p><span style={{textDecoration: "underline"}}>Days until birthday:</span> {daysUntilBirthday}</p>) }
                 </div>
                 <button onClick={this.handleDelete} id={_id} className="delete">Delete</button>
                 <Link to={this.editObject(name, date, userHours, _id)}><button className="edit">Edit</button></Link>

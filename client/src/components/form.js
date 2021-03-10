@@ -26,12 +26,14 @@ export class Form extends Component {
         const name = e.target.name.value
         const date = e.target.date.value
         const hours = e.target.hours.value || 0
-        const hourString = "0".repeat(hours < 10) + hours
+        const hourString = "0".repeat(hours < 10) + parseInt(hours)
+        console.log(date, hourString)
         const dateAndHour = new Date(`${date}T${hourString}:00`)
+        console.log(dateAndHour)
 
         try {
             //Checks if we're submitting an edit or a post
-            if(this.props.location.name) {
+            if(this.props.match.params.id) {
                 await axios.put("/api/userAges/" + this.props.match.params.id, { name, date: dateAndHour })
             } else {
                 await axios.post("/api/userAges", { name, date: dateAndHour })
@@ -55,13 +57,21 @@ export class Form extends Component {
                 hours: this.props.location.hours
             })
         } else if(this.props.match.params.id) {
-            const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data
+            try {
+                const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data
 
-            this.setState({
-                name: user.name,
-                date: user.date.slice(0, 10),
-                hours: new Date(user.date).getHours()
-            })
+                console.log(user)
+
+                this.setState({
+                    name: user.name,
+                    date: user.date.slice(0, 10),
+                    hours: new Date(user.date).getHours()
+                })
+            } catch(error) {
+                console.log("error")
+                console.log(error)
+                this.setState({ error_message: error.response.data.error_message })
+            }
         }
     }
 

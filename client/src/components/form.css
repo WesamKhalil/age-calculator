@@ -4,6 +4,7 @@
     max-width: 450px;
     background-color: #fff;
     padding: 2rem;
+    padding-bottom: 1px;
     border-radius: 5px;
     box-shadow: 0 0 8px #000;
 }
@@ -20,6 +21,7 @@
 
 .form-btn {
     width: 100%;
+    margin-bottom: 2.5rem;
     padding: 0.5rem 1rem;
     font-size: 1.2rem;
     outline: none;

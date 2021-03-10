@@ -8,8 +8,8 @@ const errorHandler = (error) => {
             newError[errorName] = message
         })
         return { error_message: newError }
-    } else if(error.kind === "ObjectId") {
-        return { error_message: { general: "User ID doesn't exist." } }
+    } else if(error.kind === "ObjectId" || error.message === "User doesn't exist.") {
+        return { error_message: { name: null, hours: null, date: null, general: "User ID doesn't exist." } }
     }
 }
 
@@ -17,6 +17,7 @@ const errorHandler = (error) => {
 const getUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
+        if(user === null) throw new Error("User doesn't exist.")
         res.json(user)
     } catch(error) {
         const newError = errorHandler(error)
