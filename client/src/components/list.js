@@ -70,7 +70,7 @@ export class List extends Component {
 
                 const difference = dateComparison[ind][0] - dateComparison[ind][1]
 
-                if(difference !== 0) return userDateIsLarger = difference > 0
+                if(difference !== 0) return difference > 0
 
                 return isUserDateLarger(ind + 1)
             }

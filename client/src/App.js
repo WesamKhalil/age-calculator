@@ -12,7 +12,7 @@ export class App extends Component {
                 <div className="container">
                     <NavBar />
                     <Route exact path="/" component={Form} />
-                    <Route exact path="/list" component={List} />
+                    <Route path="/list" component={List} />
                     <Route path="/edit/:id" component={Form}/>
                 </div>
             </Router>
