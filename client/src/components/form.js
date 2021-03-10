@@ -27,9 +27,7 @@ export class Form extends Component {
         const date = e.target.date.value
         const hours = e.target.hours.value || 0
         const hourString = "0".repeat(hours < 10) + parseInt(hours)
-        console.log(date, hourString)
         const dateAndHour = new Date(`${date}T${hourString}:00`)
-        console.log(dateAndHour)
 
         try {
             //Checks if we're submitting an edit or a post
@@ -60,23 +58,18 @@ export class Form extends Component {
             try {
                 const user = await (await axios.get("/api/userAges/individual/" + this.props.match.params.id)).data
 
-                console.log(user)
-
                 this.setState({
                     name: user.name,
                     date: user.date.slice(0, 10),
                     hours: new Date(user.date).getHours()
                 })
             } catch(error) {
-                console.log("error")
-                console.log(error)
                 this.setState({ error_message: error.response.data.error_message })
             }
         }
     }
 
     renderError = message => {
-        console.log(message)
         return message != null ? (<div className="error-message">{message}</div>) : null
     }
 
