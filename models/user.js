@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 
 //Checks if name only has alphabetic characters
 function isValidName(name) {
-    return !(/[^a-zA-Z\s]/.test(name))
+    return /^[a-zA-Z\s]+$/.test(name)
 }
 
 //Checks if inputed date is older than 117 years

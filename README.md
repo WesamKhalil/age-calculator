@@ -1,9 +1,11 @@
 App that takes a name and date of birth and returns your age in years, days and hours. Stores these records on a database which you fetch to see all records.
 Back end server that sends an SPA and provides an API to said SPA to perform CRUD operations on docuemnts stored on a database.
 
-You need a link to a MongoDB database and store it in the .env file in the root of the folder.
-
-Make sure to install node packages for the back end by typing in the terminal "npm install".
+Make sure to install all node packages for the back end by typing in the terminal "npm install".
+And install all packages for the client application by typing "npm run client-install".
+Create an .env file to store all your process variables.
+You need a link to MongoDB and store it in the .env file, store it in the MONGOURL variable, you can easily set up MongoDB by going online to MongoDB atlas and copying and pasting the link into the .env MONGOURL variable.
+In that same .env file set the port for your server with the PORT variable and the clients development server with the CLIENTPORT variable.
 
 type "npm run start" to run server for development.
 
