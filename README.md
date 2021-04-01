@@ -18,7 +18,7 @@ JWT_KEY='signingkeyexample'
 
 If you want to transpile the react code into a bundle to update the application that you'll use in production then type in the terminal "npm run client-build".  
 
-To run the production build type in the terminal "npm run start" and navigate to "http://localhost:" + the SERVER_PORT value you put in the ".env" file.  
+To run the production build type in the terminal "npm run start" and navigate to "http://localhost:" + the PORT value you put in the ".env" file.  
 
 To run this application for development type in your terminal "npm run dev" to run the back end and client server simultaneously, a window/tab should open up automatically in your browser to show you the app.  
 
